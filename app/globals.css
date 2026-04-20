@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+@media (pointer: fine) {
+  * {
+    cursor: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-black font-sans text-white antialiased;
+  background-image:
+    radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(255,255,255,0.06), transparent 24%),
+    linear-gradient(180deg, #050505 0%, #000000 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply tracking-tighter;
+}
+
+::selection {
+  background: rgba(255,255,255,0.95);
+  color: black;
+}
+
+@layer utilities {
+  .section-shell {
+    @apply mx-auto max-w-7xl px-6 md:px-10;
+  }
+
+  .glass-panel {
+    @apply border border-white/10 bg-white/[0.04] shadow-glass backdrop-blur-xl;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .noise-mask {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  .section-label {
+    @apply font-ui text-[11px] uppercase tracking-[0.32em] text-white/[0.38];
+  }
+
+  .input-shell {
+    @apply w-full rounded-2xl border border-white/10 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-white/25 focus:border-white/30;
+  }
+}
