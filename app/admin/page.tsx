@@ -1,4 +1,5 @@
 import { AdminAuthGate } from '@/components/admin/admin-auth-gate';
+import { AiStudioCard } from '@/components/admin/ai-studio-card';
 import { ContentForm } from '@/components/admin/content-form';
 import { ProfileForm } from '@/components/admin/profile-form';
 import { ProjectForm } from '@/components/admin/project-form';
@@ -39,13 +40,18 @@ export default async function AdminPage() {
   const [profile, content] = await Promise.all([getProfile(), getSiteContent()]);
 
   return (
-    <main className="min-h-screen px-6 py-16 md:px-10">
+    <main className="relative min-h-screen overflow-hidden px-6 py-16 md:px-10">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[8%] top-20 h-48 w-48 rounded-full bg-white/[0.03] blur-3xl" />
+        <div className="absolute bottom-24 right-[10%] h-56 w-56 rounded-full bg-white/[0.04] blur-3xl" />
+      </div>
+
       <div className="mx-auto max-w-7xl space-y-8">
         <div className="space-y-3">
           <p className="section-label">Admin Dashboard</p>
           <h1 className="text-5xl tracking-[-0.08em]">Manual Portfolio Control</h1>
           <p className="max-w-3xl text-sm leading-7 text-white/[0.55]">
-            Semua isi portfolio dapat diatur manual dari admin: hero, about, fokus karya, identitas personal, contact, cover project, dan asset download.
+            Semua isi portfolio dapat diatur manual dari admin: hero, about, fokus karya, identitas personal, contact, cover project, asset download, sampai assist AI untuk copy yang lebih rapi.
           </p>
         </div>
 
@@ -54,6 +60,8 @@ export default async function AdminPage() {
           <ProfileForm profile={profile} />
           <ContentForm content={content} />
         </div>
+
+        <AiStudioCard profile={profile} content={content} />
       </div>
     </main>
   );

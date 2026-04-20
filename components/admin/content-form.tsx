@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { AiPromptAssist } from '@/components/admin/ai-prompt-assist';
 import { createClient } from '@/lib/supabase/browser';
 import type { SiteContent } from '@/types';
 
@@ -32,7 +33,7 @@ export function ContentForm({ content }: { content: SiteContent }) {
   };
 
   return (
-    <form onSubmit={save} className="space-y-4 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 lg:col-span-2">
+    <form onSubmit={save} className="space-y-5 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 lg:col-span-2">
       <div className="space-y-1">
         <p className="section-label">Landing Content</p>
         <h3 className="text-2xl tracking-tighter text-white">Manual Hero, About & CTA</h3>
@@ -42,7 +43,26 @@ export function ContentForm({ content }: { content: SiteContent }) {
       <textarea className="input-shell min-h-[120px]" value={form.hero_title} onChange={(e) => setForm((p) => ({ ...p, hero_title: e.target.value }))} placeholder="Hero title" />
       <textarea className="input-shell min-h-[120px]" value={form.hero_subtitle} onChange={(e) => setForm((p) => ({ ...p, hero_subtitle: e.target.value }))} placeholder="Hero subtitle" />
       <input className="input-shell" value={form.about_title} onChange={(e) => setForm((p) => ({ ...p, about_title: e.target.value }))} placeholder="About title" />
-      <textarea className="input-shell min-h-[140px]" value={form.about_body} onChange={(e) => setForm((p) => ({ ...p, about_body: e.target.value }))} placeholder="About body" />
+
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-white/72">About body</p>
+          <AiPromptAssist
+            kind="about"
+            label="About"
+            context={{
+              full_name: 'Arkana Kafi',
+              hero_title: form.hero_title,
+              hero_subtitle: form.hero_subtitle,
+              about_title: form.about_title,
+              focus_items: form.focus_items
+            }}
+            onApply={(value) => setForm((p) => ({ ...p, about_body: value }))}
+          />
+        </div>
+        <textarea className="input-shell min-h-[150px]" value={form.about_body} onChange={(e) => setForm((p) => ({ ...p, about_body: e.target.value }))} placeholder="About body" />
+      </div>
+
       <input className="input-shell" value={form.focus_title} onChange={(e) => setForm((p) => ({ ...p, focus_title: e.target.value }))} placeholder="Focus title" />
       <textarea
         className="input-shell min-h-[120px]"
@@ -62,12 +82,12 @@ export function ContentForm({ content }: { content: SiteContent }) {
       <input className="input-shell" value={form.contact_title} onChange={(e) => setForm((p) => ({ ...p, contact_title: e.target.value }))} placeholder="Contact title" />
       <textarea className="input-shell min-h-[120px]" value={form.contact_body} onChange={(e) => setForm((p) => ({ ...p, contact_body: e.target.value }))} placeholder="Contact body" />
 
-      <button type="submit" className="rounded-full border border-white bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85">
-        Save Landing Content
-      </button>
-
-      <p className="text-sm text-white/[0.55]">{status}</p>
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="submit" className="rounded-full border border-white bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85">
+          Save Landing Content
+        </button>
+        <p className="text-sm text-white/[0.55]">{status}</p>
+      </div>
     </form>
   );
 }
-

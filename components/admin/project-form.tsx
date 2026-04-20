@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { AiPromptAssist } from '@/components/admin/ai-prompt-assist';
 import { createClient } from '@/lib/supabase/browser';
 import { slugify } from '@/lib/utils';
 
@@ -70,6 +71,8 @@ export function ProjectForm() {
       client_name: form.client_name,
       cover_url: coverUrl,
       asset_url: assetUrl,
+      image_url: coverUrl,
+      download_link: assetUrl,
       featured: form.featured
     });
 
@@ -80,7 +83,7 @@ export function ProjectForm() {
   };
 
   return (
-    <form onSubmit={save} className="space-y-4 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6">
+    <form onSubmit={save} className="space-y-5 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6">
       <div className="space-y-1">
         <p className="section-label">Project Manager</p>
         <h3 className="text-2xl tracking-tighter text-white">Manual Project Input</h3>
@@ -88,8 +91,38 @@ export function ProjectForm() {
 
       <input className="input-shell" placeholder="Project title" value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value, slug: slugify(e.target.value) }))} required />
       <input className="input-shell" placeholder="Slug" value={form.slug} onChange={(e) => setForm((p) => ({ ...p, slug: slugify(e.target.value) }))} required />
-      <input className="input-shell" placeholder="Short summary" value={form.summary} onChange={(e) => setForm((p) => ({ ...p, summary: e.target.value }))} required />
-      <textarea className="input-shell min-h-[160px]" placeholder="Project description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} required />
+
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-white/72">Short summary</p>
+          <AiPromptAssist
+            kind="project_summary"
+            label="Summary"
+            context={{ title: form.title, category: form.category, year: form.year, client_name: form.client_name }}
+            onApply={(value) => setForm((p) => ({ ...p, summary: value }))}
+          />
+        </div>
+        <input className="input-shell" placeholder="Short summary" value={form.summary} onChange={(e) => setForm((p) => ({ ...p, summary: e.target.value }))} required />
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-white/72">Project description</p>
+          <AiPromptAssist
+            kind="project_description"
+            label="Description"
+            context={{
+              title: form.title,
+              category: form.category,
+              year: form.year,
+              client_name: form.client_name,
+              summary: form.summary
+            }}
+            onApply={(value) => setForm((p) => ({ ...p, description: value }))}
+          />
+        </div>
+        <textarea className="input-shell min-h-[180px]" placeholder="Project description" value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} required />
+      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <input className="input-shell" placeholder="Category" value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} required />
@@ -107,11 +140,12 @@ export function ProjectForm() {
         <input className="input-shell file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-black" type="file" onChange={(e) => setForm((p) => ({ ...p, asset: e.target.files?.[0] ?? null }))} />
       </div>
 
-      <button type="submit" className="rounded-full border border-white bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85">
-        Save Project
-      </button>
-
-      <p className="text-sm text-white/[0.55]">{status}</p>
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="submit" className="rounded-full border border-white bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85">
+          Save Project
+        </button>
+        <p className="text-sm text-white/[0.55]">{status}</p>
+      </div>
     </form>
   );
 }
