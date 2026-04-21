@@ -4,8 +4,8 @@ import { CustomCursor } from '@/components/custom-cursor';
 import '@/app/globals.css';
 
 export const metadata: Metadata = {
-  title: 'The Arkana Vault',
-  description: 'Luxurious minimalist portfolio for Arkana Kafi.'
+  title: 'Portfolio Arkana Kafi Yaassar',
+  description: 'Selamat datang di portfolio online saya, tempat saya memamerkan karya-karya terbaik saya dalam bidang desain visual. Di sini, Anda akan menemukan berbagai proyek yang mencerminkan kreativitas, keahlian, dan dedikasi saya dalam menciptakan solusi desain yang menarik dan efektif. Jelajahi karya-karya saya dan temukan bagaimana saya dapat membantu mewujudkan visi kreatif Anda menjadi kenyataan.'
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
