@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/browser';
 
 export function AdminAuthGate() {
@@ -10,7 +10,7 @@ export function AdminAuthGate() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setLoading(true);
     setMessage('Memverifikasi akun...');
@@ -30,9 +30,9 @@ export function AdminAuthGate() {
     <form onSubmit={handleSubmit} className="mx-auto max-w-md space-y-5 rounded-[2rem] border border-white/10 bg-white/[0.03] p-8">
       <div className="space-y-2">
         <p className="section-label">Restricted Route</p>
-        <h2 className="text-3xl tracking-[-0.05em] text-white">Admin Access</h2>
+        <h2 className="text-3xl tracking-[-0.05em] text-white">Login Admin Access</h2>
         <p className="text-sm leading-7 text-white/[0.55]">
-          Login saja tidak cukup. Akun ini juga harus terdaftar di tabel <code>admin_users</code> agar bisa mengelola isi website.
+          Masukkan email dan password admin untuk mengakses dashboard. Pastikan juga kamu adalah <code>ADMIN</code>.
         </p>
       </div>
 

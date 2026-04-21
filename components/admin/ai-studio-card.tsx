@@ -61,7 +61,7 @@ export function AiStudioCard({ profile, content }: { profile: Profile; content: 
   return (
     <section className="space-y-5 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6">
       <div className="space-y-1">
-        <p className="section-label">AI Studio</p>
+        <p className="section-label">KOGRAPH | AI Studio</p>
         <h3 className="text-2xl tracking-tighter text-white">Generate lainnya untuk card paling bawah</h3>
         <p className="max-w-3xl text-sm leading-7 text-white/[0.56]">
           Dipakai untuk ide copy tambahan seperti hero headline, CTA, focus items, caption showcase, sampai creative direction untuk section baru.

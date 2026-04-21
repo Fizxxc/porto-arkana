@@ -94,7 +94,7 @@ function GeneratingOverlay({ label }: { label: string }) {
             <LoaderCircle className="h-5 w-5 text-white" />
           </motion.div>
           <div>
-            <p className="section-label">AI Generation</p>
+            <p className="section-label">KOGRAPH | AI GENERATOR</p>
             <h4 className="mt-2 text-xl tracking-[-0.04em] text-white">
               Generating {label}
             </h4>
@@ -248,13 +248,12 @@ export function AiPromptAssist({
 
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
-                  <p className="section-label">AI Prompt Builder</p>
+                  <p className="section-label">KOGRAPH | AI Prompt Builder</p>
                   <h3 className="mt-2 text-2xl tracking-[-0.05em] text-white">
                     {title}
                   </h3>
                   <p className="mt-2 text-sm leading-7 text-white/[0.56]">
-                    Tulis arahanmu, lalu AI akan mengisi field secara otomatis
-                    dengan tone portfolio premium.
+                    Tulis arahanmu, lalu AI akan generate field secara otomatis.
                   </p>
                 </div>
 
@@ -393,8 +392,13 @@ export function AiPromptAssist({
                     <div>
                       <p className="text-sm text-white/[0.85]">{message}</p>
                       <p className="mt-1 text-xs leading-5 text-white/[0.45]">
-                        Popup ini bisa diminimize ke kanan bawah seperti panel
-                        download.
+                        {phase === 'running'
+                          ? 'Sedang menyusun hasil terbaik untukmu.'
+                          : phase === 'done'
+                          ? 'Hasil sudah masuk otomatis ke field yang kamu pilih, kamu bisa close untuk popup ini yakk.'
+                          : phase === 'error'
+                          ? 'Terjadi kesalahan saat generate. Coba lagi nanti.'
+                          : 'Klik tombol AI di field mana saja untuk mulai.'}
                       </p>
                     </div>
                   </div>

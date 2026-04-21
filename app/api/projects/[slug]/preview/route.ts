@@ -20,10 +20,11 @@ export async function GET(request: Request, { params }: { params: { slug: string
     return NextResponse.json({ error: 'Project not found' }, { status: 404 });
   }
 
-  const targetUrl = project.asset_url || project.cover_url;
+  const source = new URL(request.url).searchParams.get('src');
+  const targetUrl = source || project.asset_url || project.cover_url;
 
   if (!isImageAsset(targetUrl)) {
-    return NextResponse.redirect(new URL(targetUrl, request.url), { status: 302 });
+    return NextResponse.json({ error: 'Preview available only for image assets' }, { status: 400 });
   }
 
   let input: Buffer;
@@ -33,12 +34,11 @@ export async function GET(request: Request, { params }: { params: { slug: string
     return NextResponse.json({ error: 'Asset unavailable' }, { status: 400 });
   }
   const ext = getExtension(targetUrl);
-  const output = await renderWatermarkedBuffer(input, `${project.slug}-arkana-kafi.${ext}`, ext);
+  const output = await renderWatermarkedBuffer(input, `${project.slug}-preview.${ext}`, ext);
 
   return new NextResponse(new Uint8Array(output), {
     headers: {
       'Content-Type': ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg',
-      'Content-Disposition': `attachment; filename="${project.slug}-arkana-kafi.${ext}"`,
       'Cache-Control': 'no-store'
     }
   });

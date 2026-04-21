@@ -1,103 +1,80 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Minimize2, Maximize2, LoaderCircle, CheckCircle2, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckCircle2, DownloadCloud, Minimize2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export function DownloadDock({ slug, title }: { slug: string; title: string }) {
-  const [phase, setPhase] = useState<'idle' | 'downloading' | 'done' | 'error'>('idle');
-  const [open, setOpen] = useState(false);
+export function DownloadDock() {
+  const [visible, setVisible] = useState(false);
   const [minimized, setMinimized] = useState(false);
-  const [message, setMessage] = useState('Asset siap diunduh.');
+  const [phase, setPhase] = useState<'idle' | 'downloading' | 'done'>('idle');
 
-  const triggerDownload = async () => {
-    try {
-      setOpen(true);
+  useEffect(() => {
+    const onStart = () => {
+      setVisible(true);
       setMinimized(false);
       setPhase('downloading');
-      setMessage('Menyiapkan file, watermark, dan metadata...');
+      window.setTimeout(() => setPhase('done'), 2800);
+      window.setTimeout(() => setMinimized(true), 5200);
+    };
 
-      const response = await fetch(`/api/projects/${slug}/download`);
-      if (!response.ok) throw new Error('Download gagal disiapkan.');
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = `${slug}.jpg`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      window.URL.revokeObjectURL(url);
-
-      setPhase('done');
-      setMessage('Download selesai diproses oleh browser.');
-    } catch (error) {
-      setPhase('error');
-      setMessage(error instanceof Error ? error.message : 'Terjadi kesalahan saat download.');
-    }
-  };
+    window.addEventListener('arkana-download-start', onStart);
+    return () => window.removeEventListener('arkana-download-start', onStart);
+  }, []);
 
   return (
-    <>
-      <button
-        onClick={triggerDownload}
-        className="inline-flex items-center gap-2 rounded-full border border-white bg-white px-6 py-3 text-sm font-medium text-black transition hover:opacity-85"
-      >
-        Download Project Asset
-        <Download className="h-4 w-4" />
-      </button>
-
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.96 }}
-            className="fixed bottom-24 right-4 z-[70]"
-          >
-            {minimized ? (
-              <button
-                onClick={() => setMinimized(false)}
-                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white shadow-glass backdrop-blur-xl"
-              >
-                <Maximize2 className="h-4 w-4" />
-                Downloading...
-              </button>
-            ) : (
-              <div className="w-[320px] rounded-[1.5rem] border border-white/10 bg-black/[0.85] p-5 shadow-glass backdrop-blur-2xl">
-                <div className="mb-4 flex items-start justify-between gap-4">
-                  <div>
-                    <p className="section-label">Download Center</p>
-                    <h3 className="mt-2 text-lg tracking-[-0.04em] text-white">{title}</h3>
-                  </div>
-                  <button
-                    onClick={() => setMinimized(true)}
-                    className="rounded-full border border-white/10 p-2 text-white/70 transition hover:border-white/20 hover:text-white"
-                  >
-                    <Minimize2 className="h-4 w-4" />
-                  </button>
+    <AnimatePresence>
+      {visible ? (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 24 }}
+          className={`fixed z-[90] ${minimized ? 'bottom-6 right-6 w-[320px]' : 'bottom-6 left-1/2 w-[min(92vw,560px)] -translate-x-1/2'}`}
+        >
+          <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-black/85 shadow-glass backdrop-blur-2xl">
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+                  <motion.div animate={phase === 'downloading' ? { rotate: 360 } : { rotate: 0 }} transition={phase === 'downloading' ? { duration: 1.2, repeat: Infinity, ease: 'linear' } : { duration: 0.4 }}>
+                    {phase === 'done' ? <CheckCircle2 className="h-5 w-5 text-white" /> : <DownloadCloud className="h-5 w-5 text-white" />}
+                  </motion.div>
                 </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <div className="flex items-center gap-3">
-                    {phase === 'downloading' ? <LoaderCircle className="h-5 w-5 animate-spin" /> : null}
-                    {phase === 'done' ? <CheckCircle2 className="h-5 w-5 text-white" /> : null}
-                    {phase === 'error' ? <XCircle className="h-5 w-5 text-white" /> : null}
-                    {phase === 'idle' ? <Download className="h-5 w-5" /> : null}
-                    <div>
-                      <p className="text-sm text-white/[0.85]">{message}</p>
-                      <p className="mt-1 text-xs leading-5 text-white/[0.45]">
-                        File gambar akan diberi watermark sistem. Browser yang menentukan lokasi simpan file.
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="text-sm tracking-[-0.02em] text-white">
+                    {phase === 'downloading' ? 'Preparing protected download' : 'Protected download ready'}
+                  </p>
+                  <p className="mt-1 text-xs text-white/45">
+                    {phase === 'downloading'
+                      ? 'Watermark, metadata author, dan file packaging sedang dibuat.'
+                      : 'File berhasil diproses. Browser akan melanjutkan download secara otomatis.'}
+                  </p>
                 </div>
               </div>
-            )}
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </>
+
+              <button type="button" onClick={() => setMinimized((value) => !value)} className="rounded-full border border-white/10 p-2 text-white/70 transition hover:border-white/20 hover:text-white">
+                <Minimize2 className="h-4 w-4" />
+              </button>
+            </div>
+
+            {!minimized ? (
+              <div className="space-y-3 px-5 py-4">
+                <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                  <motion.div
+                    className="h-full rounded-full bg-white"
+                    initial={{ width: '8%' }}
+                    animate={{ width: phase === 'done' ? '100%' : ['10%', '62%', '84%'] }}
+                    transition={phase === 'done' ? { duration: 0.45 } : { duration: 1.6, repeat: Infinity, repeatType: 'reverse' }}
+                  />
+                </div>
+                <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-white/35">
+                  <span>portfolio transfer</span>
+                  <span>{phase === 'done' ? '100%' : 'processing'}</span>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }

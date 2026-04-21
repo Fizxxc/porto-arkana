@@ -3,8 +3,9 @@ import { AiStudioCard } from '@/components/admin/ai-studio-card';
 import { ContentForm } from '@/components/admin/content-form';
 import { ProfileForm } from '@/components/admin/profile-form';
 import { ProjectForm } from '@/components/admin/project-form';
+import { SecurityEventsCard } from '@/components/admin/security-events-card';
 import { getAdminSession } from '@/lib/admin';
-import { getProfile, getSiteContent } from '@/lib/data';
+import { getProfile, getProjects, getSecurityEvents, getSiteContent } from '@/lib/data';
 
 export default async function AdminPage() {
   const { user, isAdmin } = await getAdminSession();
@@ -14,8 +15,8 @@ export default async function AdminPage() {
       <main className="min-h-screen px-6 py-16 md:px-10">
         <div className="mx-auto max-w-6xl space-y-8">
           <div className="space-y-3">
-            <p className="section-label">Hidden Admin Route</p>
-            <h1 className="text-5xl tracking-[-0.08em]">The Vault Access</h1>
+            <p className="section-label">STOP ⊘ IF YOU ARE NOT AN ADMIN</p>
+            <h1 className="text-5xl tracking-[-0.08em]">Login Admin Access</h1>
           </div>
           <AdminAuthGate />
         </div>
@@ -37,7 +38,12 @@ export default async function AdminPage() {
     );
   }
 
-  const [profile, content] = await Promise.all([getProfile(), getSiteContent()]);
+  const [profile, content, projects, securityEvents] = await Promise.all([
+    getProfile(),
+    getSiteContent(),
+    getProjects(),
+    getSecurityEvents(10)
+  ]);
 
   return (
     <main className="relative min-h-screen overflow-hidden px-6 py-16 md:px-10">
@@ -51,17 +57,20 @@ export default async function AdminPage() {
           <p className="section-label">Admin Dashboard</p>
           <h1 className="text-5xl tracking-[-0.08em]">Manual Portfolio Control</h1>
           <p className="max-w-3xl text-sm leading-7 text-white/[0.55]">
-            Semua isi portfolio dapat diatur manual dari admin: hero, about, fokus karya, identitas personal, contact, cover project, asset download, sampai assist AI untuk copy yang lebih rapi.
+            Semua isi portfolio dapat diatur manual di sini seperti : hero, about, highlights, software stack, data profil, preview asset, label gambar, AI assist untuk copy, dan edit project yang sudah ada.
           </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <ProjectForm />
+          <ProjectForm projects={projects} />
           <ProfileForm profile={profile} />
           <ContentForm content={content} />
         </div>
 
-        <AiStudioCard profile={profile} content={content} />
+        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <AiStudioCard profile={profile} content={content} />
+          <SecurityEventsCard events={securityEvents} />
+        </div>
       </div>
     </main>
   );

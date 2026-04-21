@@ -64,8 +64,10 @@ export interface Database {
           hero_subtitle: string;
           about_title: string;
           about_body: string;
+          about_highlights: Json;
           focus_title: string;
           focus_items: Json;
+          software_stack: Json;
           portfolio_drive_url: string;
           contact_title: string;
           contact_body: string;
@@ -78,8 +80,10 @@ export interface Database {
           hero_subtitle: string;
           about_title: string;
           about_body: string;
+          about_highlights?: Json;
           focus_title: string;
           focus_items?: Json;
+          software_stack?: Json;
           portfolio_drive_url?: string;
           contact_title: string;
           contact_body: string;
@@ -92,8 +96,10 @@ export interface Database {
           hero_subtitle?: string;
           about_title?: string;
           about_body?: string;
+          about_highlights?: Json;
           focus_title?: string;
           focus_items?: Json;
+          software_stack?: Json;
           portfolio_drive_url?: string;
           contact_title?: string;
           contact_body?: string;
@@ -112,6 +118,9 @@ export interface Database {
           client_name: string;
           cover_url: string;
           asset_url: string;
+          cover_label: string;
+          asset_label: string;
+          gallery: Json;
           featured: boolean;
         };
         Insert: {
@@ -126,6 +135,9 @@ export interface Database {
           client_name?: string;
           cover_url: string;
           asset_url: string;
+          cover_label?: string;
+          asset_label?: string;
+          gallery?: Json;
           featured?: boolean;
         };
         Update: {
@@ -140,7 +152,39 @@ export interface Database {
           client_name?: string;
           cover_url?: string;
           asset_url?: string;
+          cover_label?: string;
+          asset_label?: string;
+          gallery?: Json;
           featured?: boolean;
+        };
+      };
+      security_events: {
+        Row: {
+          id: string;
+          created_at: string;
+          event_type: string;
+          project_slug: string | null;
+          ip_address: string;
+          user_agent: string;
+          metadata: Json;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          event_type: string;
+          project_slug?: string | null;
+          ip_address: string;
+          user_agent: string;
+          metadata?: Json;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          event_type?: string;
+          project_slug?: string | null;
+          ip_address?: string;
+          user_agent?: string;
+          metadata?: Json;
         };
       };
     };

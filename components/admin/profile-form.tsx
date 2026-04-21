@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/browser';
 import type { Profile } from '@/types';
 
@@ -9,7 +9,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   const [form, setForm] = useState(profile);
   const [status, setStatus] = useState('Idle');
 
-  const save = async (event: React.FormEvent) => {
+  const save = async (event: FormEvent) => {
     event.preventDefault();
     setStatus('Saving profile...');
 

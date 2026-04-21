@@ -6,6 +6,16 @@ export type SocialLinks = {
   behance?: string;
 };
 
+export type SoftwareItem = {
+  name: string;
+  icon_url?: string;
+};
+
+export type GalleryItem = {
+  url: string;
+  label: string;
+};
+
 export type Project = {
   id: string;
   created_at: string;
@@ -18,6 +28,9 @@ export type Project = {
   client_name: string;
   cover_url: string;
   asset_url: string;
+  cover_label?: string;
+  asset_label?: string;
+  gallery: GalleryItem[];
   featured: boolean;
 };
 
@@ -42,9 +55,31 @@ export type SiteContent = {
   hero_subtitle: string;
   about_title: string;
   about_body: string;
+  about_highlights: string[];
   focus_title: string;
   focus_items: string[];
+  software_stack: SoftwareItem[];
   portfolio_drive_url: string;
   contact_title: string;
   contact_body: string;
+};
+
+export type SecurityEvent = {
+  id: string;
+  created_at: string;
+  event_type: string;
+  ip_address: string;
+  user_agent: string;
+  project_slug: string | null;
+  metadata: Record<string, unknown>;
+};
+
+export type ProjectAsset = {
+  id: string;
+  project_id: string;
+  created_at?: string;
+  file_url: string;
+  label?: string | null;
+  caption?: string | null;
+  sort_order?: number | null;
 };

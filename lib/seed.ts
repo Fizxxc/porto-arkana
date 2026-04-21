@@ -26,73 +26,18 @@ export const fallbackSiteContent: SiteContent = {
   about_title: 'About Me',
   about_body:
     'I am focused on building a portfolio that feels intentional, modern, and useful — not only beautiful. Every project is presented to communicate process, taste, and clarity to viewers, clients, or future collaborators.',
-  focus_title: 'Creative Focus',
-  focus_items: ['Brand Identity', 'Poster & Editorial', 'UI / UX Visual Direction', 'Motion-ready Presentation'],
+  about_highlights: ['Brand Identity', 'Poster & Editorial', 'UI / UX Visual Direction'],
+  focus_title: 'Software I Use',
+  focus_items: ['Figma', 'Adobe Photoshop', 'Adobe Lightroom'],
+  software_stack: [
+    { name: 'Figma', icon_url: 'https://cdn.simpleicons.org/figma/ffffff' },
+    { name: 'Adobe Photoshop', icon_url: 'https://cdn.simpleicons.org/adobephotoshop/ffffff' },
+    { name: 'Adobe Lightroom', icon_url: 'https://cdn.simpleicons.org/adobelightroomclassic/ffffff' }
+  ],
   portfolio_drive_url: 'https://example.com/portfolio-drive',
   contact_title: 'Let’s build something visually strong.',
   contact_body:
     'Open for student collaborations, personal branding work, creative direction experiments, and selected digital design projects.'
 };
 
-export const fallbackProjects: Project[] = [
-  {
-    id: '1',
-    created_at: new Date().toISOString(),
-    title: 'Noir Identity System',
-    slug: 'noir-identity-system',
-    summary: 'Brand identity study with crisp monochrome balance.',
-    description:
-      'A premium identity exploration focused on high contrast, editorial spacing, and refined layout systems for a fictional fashion-facing label.',
-    cover_url: '/textures/noir-01.jpg',
-    asset_url: '/textures/noir-01.jpg',
-    category: 'Branding',
-    year: '2025',
-    client_name: 'Concept Project',
-    featured: true
-  },
-  {
-    id: '2',
-    created_at: new Date().toISOString(),
-    title: 'Frame of Silence',
-    slug: 'frame-of-silence',
-    summary: 'Poster and photography layout direction.',
-    description:
-      'A poster-focused project combining cinematic stills, typography rhythm, and white-space-led storytelling for a gallery style visual narrative.',
-    cover_url: '/textures/noir-02.jpg',
-    asset_url: '/textures/noir-02.jpg',
-    category: 'Editorial',
-    year: '2025',
-    client_name: 'Personal Work',
-    featured: true
-  },
-  {
-    id: '3',
-    created_at: new Date().toISOString(),
-    title: 'Obsidian Interface',
-    slug: 'obsidian-interface',
-    summary: 'Luxury dashboard concept with motion-first UI.',
-    description:
-      'A dark luxury digital product concept designed to present interface confidence, hierarchy control, and premium interaction pacing.',
-    cover_url: '/textures/noir-03.jpg',
-    asset_url: '/textures/noir-03.jpg',
-    category: 'UI/UX',
-    year: '2025',
-    client_name: 'Concept Project',
-    featured: false
-  },
-  {
-    id: '4',
-    created_at: new Date().toISOString(),
-    title: 'Atlas Social Frames',
-    slug: 'atlas-social-frames',
-    summary: 'Campaign visuals for social media presentation.',
-    description:
-      'A social campaign visual exploration combining bold type, monochrome photography, and modular layouts for social-first publication.',
-    cover_url: '/textures/noir-04.jpg',
-    asset_url: '/textures/noir-04.jpg',
-    category: 'Campaign',
-    year: '2025',
-    client_name: 'Personal Work',
-    featured: false
-  }
-];
+export const fallbackProjects: Project[] = [];
